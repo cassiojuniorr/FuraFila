@@ -52,9 +52,7 @@ class _HomePage extends State<HomePage> {
                   Icon(Icons.home),
                   Text(
                     'Home',
-                    style: TextStyle(
-                      color: Colors.black
-                    ),
+                    style: TextStyle(color: Colors.black),
                   )
                 ],
               ),
