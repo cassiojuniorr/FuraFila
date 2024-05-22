@@ -52,7 +52,7 @@ class _HomePage extends State<HomePage> {
                   Icon(Icons.home),
                   Text(
                     'Home',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Color.fromARGB(255, 12, 12, 12)),
                   )
                 ],
               ),
