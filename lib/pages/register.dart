@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -29,6 +30,14 @@ class _RegisterPage extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    final AuthService _authService = AuthService();
+    final TextEditingController _nameController = TextEditingController();
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
+    singUpButton() {
+      _authService.singUser(name: _nameController.text, password: _passwordController.text, email: _emailController.text);
+    }
     return Scaffold(
       backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
       body: Stack(
@@ -64,6 +73,7 @@ class _RegisterPage extends State<RegisterPage> {
                         child: TextFormField(
                           minLines: 1,
                           maxLines: 1,
+                          controller: _nameController,
                           decoration: fieldStyle('Digite seu nome'),
                         ),
                       ),
@@ -73,6 +83,7 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
+                          controller: _emailController,
                           decoration: fieldStyle('Digite seu e-mail'),
                         ),
                       ),
@@ -82,6 +93,7 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
+                          controller: _passwordController,
                           decoration: fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
@@ -132,6 +144,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          singUpButton();
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

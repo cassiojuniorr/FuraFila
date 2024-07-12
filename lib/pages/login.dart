@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fura_fila/services/auth_service.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'home.dart';
 import 'register.dart';
 
@@ -30,6 +33,20 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    final AuthService _authService = AuthService();
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
+    loginButton() {
+      _authService.loginUser(
+          email: _emailController.text, password: _passwordController.text);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
       body: Stack(
@@ -63,6 +80,7 @@ class _LoginPage extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
+                          controller: _emailController,
                           decoration: fieldStyle('Digite seu e-mail'),
                         ),
                       ),
@@ -72,6 +90,7 @@ class _LoginPage extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
+                          controller: _passwordController,
                           decoration: fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
@@ -94,11 +113,7 @@ class _LoginPage extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()),
-                          );
+                          loginButton();
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
