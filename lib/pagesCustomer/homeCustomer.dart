@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './profile.dart';
+import 'profileCustomer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,9 +14,9 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Text(
-          "FuraFila",
-          style: TextStyle(color: Colors.white),
+        title: Image.asset(
+          "assets/titleHeader.png",
+          height: 300,
         ),
         backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
         iconTheme: const IconThemeData(

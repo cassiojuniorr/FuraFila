@@ -3,6 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  getIdUser() async {
+    final User? user = _firebaseAuth.currentUser;
+    return user?.uid;
+  }
+
   singUser({
     required String name,
     required String email,

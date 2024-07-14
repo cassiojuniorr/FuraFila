@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fura_fila/services/auth_service.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'home.dart';
-import 'register.dart';
+import 'homeCustomer.dart';
+import 'registerCustomer.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,11 +38,12 @@ class _LoginPage extends State<LoginPage> {
     loginButton() {
       _authService.loginUser(
           email: _emailController.text, password: _passwordController.text);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      if (_authService.getIdUser() != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     }
 
     return Scaffold(
