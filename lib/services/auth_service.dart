@@ -5,7 +5,7 @@ class AuthService {
 
   getIdUser() async {
     final User? user = _firebaseAuth.currentUser;
-    return user?.uid;
+    return user?.uid.isEmpty;
   }
 
   singUser({
