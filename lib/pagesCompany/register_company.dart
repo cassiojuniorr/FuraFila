@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../style/form_style.dart';
 import 'package:fura_fila/services/auth_service.dart';
 
 class RegisterCompany extends StatefulWidget {
@@ -12,26 +13,12 @@ class _RegisterCompany extends State<RegisterCompany> {
   // final _formKey = GlobalKey<FormState>();
   bool? _termos = false;
   bool? _companyregister = false;
-  InputDecoration fieldStyle(text) {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      filled: true,
-      fillColor: Colors.white,
-      hintText: text,
-      hintStyle: const TextStyle(
-        color: Color.fromRGBO(166, 166, 166, 1),
-        fontSize: 16,
-        fontWeight: FontWeight.w900,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     final AuthService _authService = AuthService();
+    FormStyle _formStyle = FormStyle();
     final TextEditingController _nameCompanyController =
         TextEditingController();
     final TextEditingController _emailCompanyController =
@@ -51,91 +38,156 @@ class _RegisterCompany extends State<RegisterCompany> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 200),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10, left: 6),
-                      child: Text(
-                        'Deseha se cadastrar como usuario??',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+            padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(right: 10, left: 6),
+                        child: Text(
+                          'Deseja se cadastrar como usuario??',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Checkbox(
+                          value: _companyregister,
+                          activeColor: const Color.fromRGBO(109, 68, 160, 1),
+                          onChanged: (newBool) {
+                            setState(() {
+                              _companyregister = newBool!;
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      minLines: 1,
+                      maxLines: 1,
+                      controller: _nameCompanyController,
+                      decoration:
+                          _formStyle.fieldStyle('Digite o da sua empresa'),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Checkbox(
-                        value: _companyregister,
-                        activeColor: const Color.fromRGBO(109, 68, 160, 1),
-                        onChanged: (newBool) {
-                          setState(() {
-                            _companyregister = newBool!;
-                          });
-                          Navigator.pop(context);
-                        },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      controller: _emailCompanyController,
+                      decoration: _formStyle.fieldStyle('Digite seu e-mail'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      controller: _passwordCompanyController,
+                      decoration: _formStyle.fieldStyle('Digite a senha'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      decoration: _formStyle.fieldStyle('Confirme senha'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      decoration: _formStyle.fieldStyle('Cep'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      decoration: _formStyle.fieldStyle('Cnpj'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      decoration: _formStyle.fieldStyle(
+                          'Preferência de atendimento online (1-10)'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50, left: 50),
+                    child: TextFormField(
+                      decoration: _formStyle.fieldStyle('Número de filiais?'),
+                      obscureText: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      singUpButton();
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color.fromRGBO(151, 106, 202, 1),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50, left: 50),
-                  child: TextFormField(
-                    minLines: 1,
-                    maxLines: 1,
-                    controller: _nameCompanyController,
-                    decoration: fieldStyle('Digite seu nome da sua empresa'),
+                    child: const Text(
+                      'Cadastrar Empresa',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        height: 2,
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(1, 4),
+                            blurRadius: 0.5,
+                            color: Color.fromRGBO(109, 68, 160, 1),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50, left: 50),
-                  child: TextFormField(
-                    controller: _emailCompanyController,
-                    decoration: fieldStyle('Digite seu e-mail'),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50, left: 50),
-                  child: TextFormField(
-                    controller: _passwordCompanyController,
-                    decoration: fieldStyle('Digite a senha'),
-                    obscureText: true,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50, left: 50),
-                  child: TextFormField(
-                    decoration: fieldStyle('Confirme senha'),
-                    obscureText: true,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 50, left: 50),
-                  child: TextFormField(
-                    decoration: fieldStyle('Cep'),
-                    obscureText: true,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

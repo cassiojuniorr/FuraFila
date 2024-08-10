@@ -21,6 +21,7 @@ class _HomePage extends State<HomePage> {
         backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
         iconTheme: const IconThemeData(
           color: Colors.white,
+          size: 40,
         ),
         actions: [
           IconButton(

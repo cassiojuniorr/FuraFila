@@ -1,16 +1,19 @@
-/* import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  late DatabaseReference ref = FirebaseDatabase.instance.ref();
+  CollectionReference<Map<String, dynamic>> db =
+      FirebaseFirestore.instance.collection('users');
 
   void singUpUser({
     required String name,
     required String email,
     required String password,
   }) {
-    dbRefUser = ref.child('users');
+    var newUser = {
+      'emailUser': email,
+      'nameUser': name,
+      'passwordUser': password
+    };
+    db.add(newUser);
   }
-
 }
- */

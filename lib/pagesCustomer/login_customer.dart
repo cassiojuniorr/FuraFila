@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../style/form_style.dart';
 import 'package:fura_fila/services/auth_service.dart';
 import 'home_customer.dart';
 import 'register_customer.dart';
@@ -11,27 +12,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  // final _formKey = GlobalKey<FormState>();
-  InputDecoration fieldStyle(text) {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      filled: true,
-      fillColor: Colors.white,
-      hintText: text,
-      hintStyle: const TextStyle(
-        color: Color.fromRGBO(166, 166, 166, 1),
-        fontSize: 16,
-        fontWeight: FontWeight.w900,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     final AuthService _authService = AuthService();
+    FormStyle _formStyle = FormStyle();
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
 
@@ -40,12 +25,12 @@ class _LoginPage extends State<LoginPage> {
           email: _emailController.text, password: _passwordController.text);
       await _authService.getIdUser().then((val) {
         if (val != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      }
-      });      
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        }
+      });
     }
 
     return Scaffold(
@@ -82,7 +67,8 @@ class _LoginPage extends State<LoginPage> {
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
                           controller: _emailController,
-                          decoration: fieldStyle('Digite seu e-mail'),
+                          decoration:
+                              _formStyle.fieldStyle('Digite seu e-mail'),
                         ),
                       ),
                       const SizedBox(
@@ -92,7 +78,7 @@ class _LoginPage extends State<LoginPage> {
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
                           controller: _passwordController,
-                          decoration: fieldStyle('Digite sua senha'),
+                          decoration: _formStyle.fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
                       ),

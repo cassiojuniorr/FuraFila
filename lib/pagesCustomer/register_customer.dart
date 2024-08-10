@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../style/form_style.dart';
 import 'package:fura_fila/pagesCompany/register_company.dart';
 import 'package:fura_fila/services/auth_service.dart';
+// import '../core/snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -13,21 +15,6 @@ class _RegisterPage extends State<RegisterPage> {
   // final _formKey = GlobalKey<FormState>();
   bool? _termos = false;
   bool? _companyregister = false;
-  InputDecoration fieldStyle(text) {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      filled: true,
-      fillColor: Colors.white,
-      hintText: text,
-      hintStyle: const TextStyle(
-        color: Color.fromRGBO(166, 166, 166, 1),
-        fontSize: 16,
-        fontWeight: FontWeight.w900,
-      ),
-    );
-  }
 
   changeUserCompany(newBool) {
     setState(() {
@@ -46,6 +33,7 @@ class _RegisterPage extends State<RegisterPage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     final AuthService _authService = AuthService();
+    FormStyle _formStyle = FormStyle();
     final TextEditingController _nameController = TextEditingController();
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
@@ -55,6 +43,17 @@ class _RegisterPage extends State<RegisterPage> {
           name: _nameController.text,
           password: _passwordController.text,
           email: _emailController.text);
+
+      /* .then((String? erro) {
+        if (erro != null) {
+          showSnackBar(context: context, text: erro);
+        } else {
+          showSnackBar(
+              context: context,
+              text: "Cadastro efetuado com sucesso!",
+              isErro: false);
+        }
+      }) */
     }
 
     return Scaffold(
@@ -93,7 +92,7 @@ class _RegisterPage extends State<RegisterPage> {
                           const Padding(
                             padding: EdgeInsets.only(right: 10, left: 6),
                             child: Text(
-                              'Deseha se cadastrar como empresa??',
+                              'Deseja se cadastrar como empresa??',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -122,7 +121,7 @@ class _RegisterPage extends State<RegisterPage> {
                           minLines: 1,
                           maxLines: 1,
                           controller: _nameController,
-                          decoration: fieldStyle('Digite seu nome'),
+                          decoration: _formStyle.fieldStyle('Digite seu nome'),
                         ),
                       ),
                       const SizedBox(
@@ -132,7 +131,7 @@ class _RegisterPage extends State<RegisterPage> {
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
                           controller: _emailController,
-                          decoration: fieldStyle('Digite seu e-mail'),
+                          decoration: _formStyle.fieldStyle('Digite seu e-mail'),
                         ),
                       ),
                       const SizedBox(
@@ -142,7 +141,7 @@ class _RegisterPage extends State<RegisterPage> {
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
                           controller: _passwordController,
-                          decoration: fieldStyle('Digite sua senha'),
+                          decoration: _formStyle.fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
                       ),
@@ -152,7 +151,7 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
-                          decoration: fieldStyle('Confirme senha'),
+                          decoration: _formStyle.fieldStyle('Confirme senha'),
                           obscureText: true,
                         ),
                       ),
@@ -204,6 +203,7 @@ class _RegisterPage extends State<RegisterPage> {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
+                            height: 2,
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
                             shadows: <Shadow>[

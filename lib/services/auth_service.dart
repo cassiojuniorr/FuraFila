@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import './user_service.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -8,22 +9,28 @@ class AuthService {
     return user?.uid.isEmpty;
   }
 
-  singUser({
+  Future<String?> singUser({
     required String name,
     required String email,
     required String password,
   }) async {
     try {
+      UserService serviceUser = UserService();
+      
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-
+      serviceUser.singUpUser(name: name, email: email, password: password);
       await userCredential.user!.updateDisplayName(name);
+      return null;
     } on FirebaseAuthException catch (e) {
+      if (e.code == "email-already-in-use") {
+        return 'O usuário já está cadastrda';
+      }
       print('Failed with error register code: ${e.code}');
-      print(e.message);
+      return e.message;
     }
   }
 
