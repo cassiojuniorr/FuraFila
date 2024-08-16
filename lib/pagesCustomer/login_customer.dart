@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/helpers/LoginHelpers.dart';
 import '../style/form_style.dart';
 import 'package:fura_fila/services/auth_service.dart';
 import 'home_customer.dart';
@@ -12,26 +13,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  
+  final TextEditingController _emailLoginController = TextEditingController();
+  final TextEditingController _passwordLoginController =
+      TextEditingController();
+
+  
+
+  @override
+  void dispose() {
+    _emailLoginController.dispose();
+    _passwordLoginController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    final AuthService _authService = AuthService();
     FormStyle _formStyle = FormStyle();
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-
-    loginButton() async {
-      _authService.loginUser(
-          email: _emailController.text, password: _passwordController.text);
-      await _authService.getIdUser().then((val) {
-        if (val != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
-        }
-      });
-    }
+    LoginHelperUser _LoginHelperUser = LoginHelperUser();
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
@@ -66,7 +66,7 @@ class _LoginPage extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: _emailLoginController,
                           decoration:
                               _formStyle.fieldStyle('Digite seu e-mail'),
                         ),
@@ -77,7 +77,7 @@ class _LoginPage extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
-                          controller: _passwordController,
+                          controller: _passwordLoginController,
                           decoration: _formStyle.fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
@@ -100,7 +100,7 @@ class _LoginPage extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          loginButton();
+                          _LoginHelperUser.loginButton(_emailLoginController.text, _passwordLoginController.text, context);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

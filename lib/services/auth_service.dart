@@ -6,7 +6,7 @@ class AuthService {
 
   getIdUser() async {
     final User? user = _firebaseAuth.currentUser;
-    return user?.uid.isEmpty;
+    return user?.uid;
   }
 
   Future<String?> singUser({
@@ -16,14 +16,14 @@ class AuthService {
   }) async {
     try {
       UserService serviceUser = UserService();
-      
+
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       serviceUser.singUpUser(name: name, email: email, password: password);
-      await userCredential.user!.updateDisplayName(name);
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {

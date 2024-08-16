@@ -1,19 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserService {
-  CollectionReference<Map<String, dynamic>> db =
-      FirebaseFirestore.instance.collection('users');
+  CollectionReference db = FirebaseFirestore.instance.collection('users');
 
   void singUpUser({
     required String name,
     required String email,
     required String password,
-  }) {
-    var newUser = {
-      'emailUser': email,
-      'nameUser': name,
-      'passwordUser': password
-    };
-    db.add(newUser);
+  }) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    print('---------------------------------------------- $user');
+    if (user != null) {
+      db
+          .add({'emailUser': email, 'nameUser': name, 'passwordUser': password})
+          .then((DocumentReference doc) =>
+              print('---------------------------------------------- ${doc.id}'))
+          .catchError((error) => print(
+              'eeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrroooooooo${error}'));
+    }
   }
 }

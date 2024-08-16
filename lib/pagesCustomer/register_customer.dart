@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/helpers/RegisterHelpers.dart';
 import '../style/form_style.dart';
-import 'package:fura_fila/pagesCompany/register_company.dart';
-import 'package:fura_fila/services/auth_service.dart';
-// import '../core/snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,49 +10,49 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
-  // final _formKey = GlobalKey<FormState>();
-  bool? _termos = false;
-  bool? _companyregister = false;
+  bool _termos = false;
+  bool _companyregister = false;
 
-  changeUserCompany(newBool) {
-    setState(() {
-      _companyregister = newBool!;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RegisterCompany()),
-    );
-    setState(() {
-      _companyregister = !newBool;
-    });
+  final TextEditingController _nameRegisterController = TextEditingController();
+  final TextEditingController _emailRegisterController =
+      TextEditingController();
+  final TextEditingController _passwordRegisterController =
+      TextEditingController();
+  final TextEditingController _passwordConfirmRegisterController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameRegisterController.addListener(_updateState);
+    _emailRegisterController.addListener(_updateState);
+    _passwordRegisterController.addListener(_updateState);
+    _passwordConfirmRegisterController.addListener(_updateState);
+  }
+
+  void _updateState() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _nameRegisterController.removeListener(_updateState);
+    _emailRegisterController.removeListener(_updateState);
+    _passwordRegisterController.removeListener(_updateState);
+    _passwordConfirmRegisterController.removeListener(_updateState);
+
+    _nameRegisterController.dispose();
+    _emailRegisterController.dispose();
+    _passwordRegisterController.dispose();
+    _passwordConfirmRegisterController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    final AuthService _authService = AuthService();
     FormStyle _formStyle = FormStyle();
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-
-    singUpButton() {
-      _authService.singUser(
-          name: _nameController.text,
-          password: _passwordController.text,
-          email: _emailController.text);
-
-      /* .then((String? erro) {
-        if (erro != null) {
-          showSnackBar(context: context, text: erro);
-        } else {
-          showSnackBar(
-              context: context,
-              text: "Cadastro efetuado com sucesso!",
-              isErro: false);
-        }
-      }) */
-    }
+    RegisterHelpersUser _RegisterHelpersUser = RegisterHelpersUser();
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
@@ -92,7 +90,7 @@ class _RegisterPage extends State<RegisterPage> {
                           const Padding(
                             padding: EdgeInsets.only(right: 10, left: 6),
                             child: Text(
-                              'Deseja se cadastrar como empresa??',
+                              'Deseja se cadastrar como empresa?',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -106,7 +104,9 @@ class _RegisterPage extends State<RegisterPage> {
                               activeColor:
                                   const Color.fromRGBO(109, 68, 160, 1),
                               onChanged: (newBool) {
-                                changeUserCompany(newBool);
+                                setState(() {
+                                  _companyregister = newBool!;
+                                });
                               },
                             ),
                           ),
@@ -120,7 +120,7 @@ class _RegisterPage extends State<RegisterPage> {
                         child: TextFormField(
                           minLines: 1,
                           maxLines: 1,
-                          controller: _nameController,
+                          controller: _nameRegisterController,
                           decoration: _formStyle.fieldStyle('Digite seu nome'),
                         ),
                       ),
@@ -130,8 +130,9 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
-                          controller: _emailController,
-                          decoration: _formStyle.fieldStyle('Digite seu e-mail'),
+                          controller: _emailRegisterController,
+                          decoration:
+                              _formStyle.fieldStyle('Digite seu e-mail'),
                         ),
                       ),
                       const SizedBox(
@@ -140,7 +141,7 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
-                          controller: _passwordController,
+                          controller: _passwordRegisterController,
                           decoration: _formStyle.fieldStyle('Digite sua senha'),
                           obscureText: true,
                         ),
@@ -151,6 +152,7 @@ class _RegisterPage extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(right: 50, left: 50),
                         child: TextFormField(
+                          controller: _passwordConfirmRegisterController,
                           decoration: _formStyle.fieldStyle('Confirme senha'),
                           obscureText: true,
                         ),
@@ -189,9 +191,19 @@ class _RegisterPage extends State<RegisterPage> {
                         height: 26,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          singUpButton();
+                        onPressed: () async {
+                          _RegisterHelpersUser.validForm(
+                                  _nameRegisterController.text,
+                                  _emailRegisterController.text,
+                                  _passwordRegisterController.text,
+                                  _passwordConfirmRegisterController.text)
+                              ? await _RegisterHelpersUser.singUpRegister(
+                                  _nameRegisterController.text,
+                                  _emailRegisterController.text,
+                                  _passwordRegisterController.text,
+                                  _passwordConfirmRegisterController.text,
+                                  context)
+                              : print('cu');
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
