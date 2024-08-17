@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fura_fila/helpers/RegisterHelpers.dart';
+import 'package:fura_fila/pagesCompany/register_company.dart';
 import '../style/form_style.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _RegisterPage extends State<RegisterPage> {
     _emailRegisterController.dispose();
     _passwordRegisterController.dispose();
     _passwordConfirmRegisterController.dispose();
+    _companyregister = false;
     super.dispose();
   }
 
@@ -52,7 +54,7 @@ class _RegisterPage extends State<RegisterPage> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     FormStyle _formStyle = FormStyle();
-    RegisterHelpersUser _RegisterHelpersUser = RegisterHelpersUser();
+    RegisterHelpersUser _registerHelpersUser = RegisterHelpersUser();
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
@@ -106,6 +108,13 @@ class _RegisterPage extends State<RegisterPage> {
                               onChanged: (newBool) {
                                 setState(() {
                                   _companyregister = newBool!;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegisterCompany()),
+                                  );
+                                  _companyregister = false;
                                 });
                               },
                             ),
@@ -192,18 +201,18 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          _RegisterHelpersUser.validForm(
+                          _registerHelpersUser.validForm(
                                   _nameRegisterController.text,
                                   _emailRegisterController.text,
                                   _passwordRegisterController.text,
                                   _passwordConfirmRegisterController.text)
-                              ? await _RegisterHelpersUser.singUpRegister(
+                              ? await _registerHelpersUser.singUpRegister(
                                   _nameRegisterController.text,
                                   _emailRegisterController.text,
                                   _passwordRegisterController.text,
                                   _passwordConfirmRegisterController.text,
                                   context)
-                              : print('cu');
+                              : null;
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

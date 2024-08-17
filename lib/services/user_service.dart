@@ -15,9 +15,8 @@ class UserService {
       db
           .add({'emailUser': email, 'nameUser': name, 'passwordUser': password})
           .then((DocumentReference doc) =>
-              print('---------------------------------------------- ${doc.id}'))
-          .catchError((error) => print(
-              'eeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrroooooooo${error}'));
+              print('id user: ${doc.id}'))
+          .catchError((error) => print('${error}'));
     }
   }
 }

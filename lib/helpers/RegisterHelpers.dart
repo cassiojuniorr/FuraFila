@@ -1,4 +1,6 @@
 import 'package:fura_fila/core/snack_bar.dart';
+import 'package:fura_fila/pagesCompany/register_company.dart';
+import 'package:fura_fila/pagesCompany/register_image_company.dart';
 import 'package:fura_fila/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +52,76 @@ class RegisterHelpersUser extends RegisterHelpers {
   ) {
     return name.isNotEmpty &&
         email.isNotEmpty &&
+        password.isNotEmpty &&
+        password.isNotEmpty &&
+        password == passwordConfirm;
+  }
+}
+
+class RegisterHelpersCompany extends RegisterHelpers {
+  final AuthService _authService = AuthService();
+
+  Future<void> registerCompany(
+    String name,
+    String email,
+    String password,
+    String passwordConfirm,
+    String cnpj,
+    String cep,
+    String filiais,
+    String queuePreference,
+    BuildContext context,
+  ) async {
+    if (password == passwordConfirm) {
+      try {
+        String? erro = await _authService.singCompany(
+          name: name,
+          password: password,
+          email: email,
+          cnpj: cnpj,
+          cep: cep,
+          filiais: filiais,
+          queuePreference: queuePreference,
+        );
+
+        if (erro != null) {
+          showSnackBar(context: context, text: erro);
+        } else {
+          showSnackBar(
+            context: context,
+            text: "Cadastro da empresa efetuado com sucesso!",
+            isErro: false,
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RegisterImageCompany()),
+          );
+        }
+      } catch (e) {
+        showSnackBar(context: context, text: "Erro ao realizar cadastro");
+      }
+    } else {
+      showSnackBar(context: context, text: "Senhas não conferem");
+    }
+  }
+
+  bool validFormCompany(
+    String name,
+    String email,
+    String password,
+    String passwordConfirm,
+    String cnpj,
+    String cep,
+    String filiais,
+    String queuePreference,
+  ) {
+    return name.isNotEmpty &&
+        email.isNotEmpty &&
+        cnpj.isNotEmpty &&
+        cep.isNotEmpty &&
+        filiais.isNotEmpty &&
+        queuePreference.isNotEmpty &&
         password.isNotEmpty &&
         password.isNotEmpty &&
         password == passwordConfirm;

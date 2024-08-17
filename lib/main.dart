@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/pagesCompany/register_image_company.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: LoginPage(),
+      home: RegisterImageCompany(),
       debugShowCheckedModeBanner: false,
     );
   }
