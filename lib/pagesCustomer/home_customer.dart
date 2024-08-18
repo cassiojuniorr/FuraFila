@@ -37,30 +37,45 @@ class _HomePage extends State<HomePage> {
       ),
       drawer: Drawer(
         child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Color.fromRGBO(46, 10, 96, 1),
               ),
               child: Text(
-                'Drawer Header',
-                style: TextStyle(color: Colors.white),
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
             ListTile(
-              title: const Row(
-                children: [
-                  Icon(Icons.home),
-                  Text(
-                    'Home',
-                    style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                  )
-                ],
-              ),
+              leading: const Icon(Icons.home),
+              title: const Text('Página inicial'),
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                Navigator.pushNamed(context, '/home');
               },
-            )
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Configurações'),
+              onTap: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Perfil'),
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Sair'),
+              onTap: () {
+                Navigator.pushNamed(context, '/logout');
+              },
+            ),
           ],
         ),
       ),

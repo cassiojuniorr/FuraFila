@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fura_fila/helpers/RegisterHelpers.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
 import '../style/form_style.dart';
-import 'package:fura_fila/services/auth_service.dart';
 
 class RegisterCompany extends StatefulWidget {
   const RegisterCompany({super.key});
@@ -82,36 +81,32 @@ class _RegisterCompany extends State<RegisterCompany> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 6.0,
+                    runSpacing: 10.0,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(right: 10, left: 6),
-                        child: Text(
-                          'Deseja se cadastrar como usuario??',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
+                      const Text(
+                        'Deseja se cadastrar como usuário?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Checkbox(
-                          value: _companyregister,
-                          activeColor: const Color.fromRGBO(109, 68, 160, 1),
-                          onChanged: (newBool) {
-                            setState(() {
-                              _companyregister = newBool!;
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
+                      Checkbox(
+                        value: _companyregister,
+                        activeColor: const Color.fromRGBO(109, 68, 160, 1),
+                        onChanged: (newBool) {
+                          setState(() {
+                            _companyregister = newBool!;
+                          });
+                          Navigator.pop(context);
+                        },
                       ),
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 40,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 50, left: 50),
@@ -119,8 +114,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       minLines: 1,
                       maxLines: 1,
                       controller: _nameCompanyController,
-                      decoration:
-                          _formStyle.fieldStyle('Digite o nome da sua empresa'),
+                      decoration: _formStyle.fieldStyleLabel('Nome da empresa'),
                     ),
                   ),
                   const SizedBox(
@@ -130,7 +124,8 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _emailCompanyController,
-                      decoration: _formStyle.fieldStyle('Digite seu e-mail'),
+                      decoration:
+                          _formStyle.fieldStyleLabel('Digite seu e-mail'),
                     ),
                   ),
                   const SizedBox(
@@ -140,7 +135,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _passwordCompanyController,
-                      decoration: _formStyle.fieldStyle('Digite a senha'),
+                      decoration: _formStyle.fieldStyleLabel('Digite a senha'),
                       obscureText: true,
                     ),
                   ),
@@ -151,7 +146,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _passwordConfirmCompanyController,
-                      decoration: _formStyle.fieldStyle('Confirme senha'),
+                      decoration: _formStyle.fieldStyleLabel('Confirme senha'),
                       obscureText: true,
                     ),
                   ),
@@ -162,8 +157,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _cepCompanyController,
-                      decoration: _formStyle.fieldStyle('Cep'),
-                      obscureText: true,
+                      decoration: _formStyle.fieldStyleLabel('Cep'),
                     ),
                   ),
                   const SizedBox(
@@ -173,8 +167,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _cnpjCompanyController,
-                      decoration: _formStyle.fieldStyle('Cnpj'),
-                      obscureText: true,
+                      decoration: _formStyle.fieldStyleLabel('CNPJ'),
                     ),
                   ),
                   const SizedBox(
@@ -184,9 +177,8 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _queueCompanyController,
-                      decoration: _formStyle.fieldStyle(
+                      decoration: _formStyle.fieldStyleLabel(
                           'Preferência de atendimento online (1-10)'),
-                      obscureText: true,
                     ),
                   ),
                   const SizedBox(
@@ -196,12 +188,38 @@ class _RegisterCompany extends State<RegisterCompany> {
                     padding: const EdgeInsets.only(right: 50, left: 50),
                     child: TextFormField(
                       controller: _filiaisCompanyController,
-                      decoration: _formStyle.fieldStyle('Número de filiais?'),
-                      obscureText: true,
+                      decoration:
+                          _formStyle.fieldStyleLabel('Número de filiais'),
                     ),
                   ),
                   const SizedBox(
                     height: 20,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 6.0,
+                    runSpacing: 10.0,
+                    children: [
+                      Checkbox(
+                        value: _termos,
+                        activeColor: const Color.fromRGBO(109, 68, 160, 1),
+                        onChanged: (newBool) {
+                          setState(() {
+                            _termos = newBool!;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Aceitar termos de licença',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -250,7 +268,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   TextButton(
                     onPressed: () {
