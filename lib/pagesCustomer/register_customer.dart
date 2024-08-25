@@ -205,7 +205,9 @@ class _RegisterPage extends State<RegisterPage> {
                                   _nameRegisterController.text,
                                   _emailRegisterController.text,
                                   _passwordRegisterController.text,
-                                  _passwordConfirmRegisterController.text)
+                                  _passwordConfirmRegisterController.text,
+                                  _termos,
+                                  context)
                               ? await _registerHelpersUser.singUpRegister(
                                   _nameRegisterController.text,
                                   _emailRegisterController.text,

@@ -12,7 +12,7 @@ class FormStyle {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
-        borderSide: const BorderSide(color: Colors.white),
+        borderSide: const BorderSide(color: Colors.white, width: 3),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20),
@@ -41,7 +41,7 @@ class FormStyle {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
-        borderSide: const BorderSide(color: Colors.white),
+        borderSide: const BorderSide(color: Colors.white, width: 3),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),
@@ -53,6 +53,7 @@ class FormStyle {
         fontSize: 16,
         fontWeight: FontWeight.w900,
       ),
+      contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/core/reset_password.dart';
 import 'package:fura_fila/helpers/LoginHelpers.dart';
 import '../style/form_style.dart';
 import 'package:fura_fila/services/auth_service.dart';
@@ -13,12 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-  
   final TextEditingController _emailLoginController = TextEditingController();
   final TextEditingController _passwordLoginController =
       TextEditingController();
-
-  
 
   @override
   void dispose() {
@@ -86,7 +84,13 @@ class _LoginPage extends State<LoginPage> {
                         height: 26,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ResetPassword()),
+                          );
+                        },
                         child: const Text(
                           'Esqueceu sua senha? Recuperar!',
                           style: TextStyle(
@@ -99,8 +103,15 @@ class _LoginPage extends State<LoginPage> {
                         height: 26,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          _LoginHelperUser.loginButton(_emailLoginController.text, _passwordLoginController.text, context);
+                        onPressed: () async {
+                          _LoginHelperUser.validLogin(
+                                  _emailLoginController.text,
+                                  _passwordLoginController.text)
+                              ? await _LoginHelperUser.loginButton(
+                                  _emailLoginController.text,
+                                  _passwordLoginController.text,
+                                  context)
+                              : null;
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

@@ -49,12 +49,18 @@ class RegisterHelpersUser extends RegisterHelpers {
     String email,
     String password,
     String passwordConfirm,
+    bool? termos,
+    BuildContext context,
   ) {
+    if (password != passwordConfirm) {
+      showSnackBar(context: context, text: "Senhas não conferem");
+    }
     return name.isNotEmpty &&
         email.isNotEmpty &&
         password.isNotEmpty &&
         password.isNotEmpty &&
-        password == passwordConfirm;
+        password == passwordConfirm &&
+        termos == true;
   }
 }
 
@@ -115,7 +121,12 @@ class RegisterHelpersCompany extends RegisterHelpers {
     String cep,
     String filiais,
     String queuePreference,
+    bool? termos,
+    BuildContext context,
   ) {
+    if (password != passwordConfirm) {
+      showSnackBar(context: context, text: "Senhas não conferem");
+    }
     return name.isNotEmpty &&
         email.isNotEmpty &&
         cnpj.isNotEmpty &&
@@ -124,6 +135,7 @@ class RegisterHelpersCompany extends RegisterHelpers {
         queuePreference.isNotEmpty &&
         password.isNotEmpty &&
         password.isNotEmpty &&
-        password == passwordConfirm;
+        password == passwordConfirm &&
+        termos == true;
   }
 }

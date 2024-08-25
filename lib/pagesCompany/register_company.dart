@@ -115,6 +115,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       maxLines: 1,
                       controller: _nameCompanyController,
                       decoration: _formStyle.fieldStyleLabel('Nome da empresa'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -126,6 +127,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       controller: _emailCompanyController,
                       decoration:
                           _formStyle.fieldStyleLabel('Digite seu e-mail'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -136,6 +138,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     child: TextFormField(
                       controller: _passwordCompanyController,
                       decoration: _formStyle.fieldStyleLabel('Digite a senha'),
+                      style: const TextStyle(color: Colors.white),
                       obscureText: true,
                     ),
                   ),
@@ -147,6 +150,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     child: TextFormField(
                       controller: _passwordConfirmCompanyController,
                       decoration: _formStyle.fieldStyleLabel('Confirme senha'),
+                      style: const TextStyle(color: Colors.white),
                       obscureText: true,
                     ),
                   ),
@@ -158,6 +162,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     child: TextFormField(
                       controller: _cepCompanyController,
                       decoration: _formStyle.fieldStyleLabel('Cep'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -168,6 +173,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     child: TextFormField(
                       controller: _cnpjCompanyController,
                       decoration: _formStyle.fieldStyleLabel('CNPJ'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -179,6 +185,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       controller: _queueCompanyController,
                       decoration: _formStyle.fieldStyleLabel(
                           'Preferência de atendimento online (1-10)'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -190,6 +197,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       controller: _filiaisCompanyController,
                       decoration:
                           _formStyle.fieldStyleLabel('Número de filiais'),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -231,7 +239,9 @@ class _RegisterCompany extends State<RegisterCompany> {
                               _cnpjCompanyController.text,
                               _cepCompanyController.text,
                               _filiaisCompanyController.text,
-                              _queueCompanyController.text)
+                              _queueCompanyController.text,
+                              _termos,
+                              context)
                           ? await _registerHelpersCompany.registerCompany(
                               _nameCompanyController.text,
                               _emailCompanyController.text,
