@@ -1,7 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:fura_fila/helpers/ImgPickerHelpers.dart';
 import 'package:fura_fila/style/form_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class RegisterImageCompany extends StatefulWidget {
   const RegisterImageCompany({super.key});
@@ -13,13 +17,14 @@ class RegisterImageCompany extends StatefulWidget {
 class _RegisterImageCompany extends State<RegisterImageCompany> {
   int currentIndex = 0;
   final CarouselSliderController _controller = CarouselSliderController();
+  final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
 
   final urlImages = [
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
   ];
 
   @override
@@ -68,6 +73,28 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                 buildIndicator(),
                 const SizedBox(height: 30),
                 buildButtons(),
+                const SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                  onPressed: _imgPickerHelpers.pickImageFromGallery,
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 14),
+                      backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
+                  child: const Text(
+                    'Adicionar imagens',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                )
               ],
             ),
           ),
@@ -104,9 +131,9 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
         children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-              backgroundColor: const Color.fromRGBO(46, 10, 96, 1)
-            ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+                backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
             onPressed: previous,
             child: const Icon(
               Icons.arrow_back,
@@ -122,13 +149,17 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 32), backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+                backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
             onPressed: next,
             child: const Icon(
               Icons.arrow_forward,
               size: 32,
               color: Colors.white,
             ),
+          ),
+          const SizedBox(
+            height: 30,
           ),
         ],
       );
