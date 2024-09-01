@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fura_fila/services/selected_images.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
@@ -11,58 +14,88 @@ class ImgPickerHelpers {
   SelectedImages selectedImages = SelectedImages();
 
   void pickMultipleImages() async {
-    var storageStatus = await Permission.storage.status;
-    if (!storageStatus.isGranted) {
-      await Permission.storage.request();
-    }
-    if (storageStatus.isGranted) {
+    if (kIsWeb) {
       final pickedFile = ImagePicker();
       final List<XFile> images = await pickedFile.pickMultiImage();
 
-      if (images.isEmpty) {
-        selectedImages.pickedImages.addAll(images);
+      if (images.isNotEmpty) {
+        for (var image in images) {
+          await uploadImage(image);
+        }
+      }
+    } else {
+      var storageStatus = await Permission.storage.status;
+      if (!storageStatus.isGranted) {
+        await Permission.storage.request();
+      }
+      if (storageStatus.isGranted) {
+        final pickedFile = ImagePicker();
+        final List<XFile> images = await pickedFile.pickMultiImage();
+
+        if (images.isEmpty) {
+          selectedImages.pickedImages.addAll(images);
+        }
       }
     }
   }
 
   Future<void> pickImageFromGallery() async {
     try {
-      /* var storageStatus = await Permission.storage.status;
-      if (!storageStatus.isGranted) {
-        storageStatus = await Permission.storage.request();
-        if (!storageStatus.isGranted) {
-          print("Permissão de armazenamento negada");
-          return;
-        }
-      } */
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
-      final XFile? returnedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (returnedImage == null) {
+      if (pickedImage == null) {
         print("Nenhuma imagem selecionada");
         return;
       }
 
-      final Directory appDirectory = await getApplicationDocumentsDirectory();
-      final String directoryPath = path.join(appDirectory.path, 'imgCompany');
-      print(directoryPath);
+      if (kIsWeb) {
+        await uploadImage(pickedImage);
+      } else {
+        final Directory appDirectory = await getApplicationDocumentsDirectory();
+        final String directoryPath = path.join(appDirectory.path, 'imgCompany');
+        final Directory directory = Directory(directoryPath);
+        if (!(await directory.exists())) {
+          await directory.create(recursive: true);
+        }
 
-      final Directory directory = Directory(directoryPath);
-      if (!(await directory.exists())) {
-        await directory.create(recursive: true);
+        final String fileName = path.basename(pickedImage.path);
+        final String filePath = path.join(directoryPath, fileName);
+
+        final File localImage = await File(pickedImage.path).copy(filePath);
+
+        selectedImage.value = localImage;
+        print('Imagem salva em: $filePath');
       }
-
-      final String fileName = path.basename(returnedImage.path);
-      final String filePath = path.join(directoryPath, fileName);
-
-      final File localImage = await File(returnedImage.path).copy(filePath);
-
-      selectedImage.value = localImage;
-
-      print('Imagem salva em: $filePath');
     } catch (e) {
       print("Erro ao salvar a imagem: $e");
+    }
+  }
+
+  Future<void> uploadImage(XFile image) async {
+    try {
+      final imageBytes = await image.readAsBytes();
+      final fileName = image.name;
+
+      final uri = Uri.parse('http://10.0.0.190:3000/upload');
+
+      final request = http.MultipartRequest('POST', uri)
+        ..files.add(http.MultipartFile.fromBytes(
+          'image', 
+          imageBytes, 
+          filename: fileName, 
+          contentType: MediaType('image', 'jpg')
+        ));
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Imagem enviada com sucesso.');
+      } else {
+        print('Falha ao enviar imagem. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Erro ao enviar a imagem: $e");
     }
   }
 }
