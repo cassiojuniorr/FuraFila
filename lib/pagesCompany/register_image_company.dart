@@ -1,11 +1,8 @@
+import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fura_fila/helpers/ImgPickerHelpers.dart';
-import 'package:fura_fila/style/form_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class RegisterImageCompany extends StatefulWidget {
   const RegisterImageCompany({super.key});
@@ -19,17 +16,25 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
   final CarouselSliderController _controller = CarouselSliderController();
   final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
 
-  final urlImages = [
+  final List<Uint8List?> imageBytes = List<Uint8List?>.filled(
+      5, null);
+ /*  final List<String> urlImages = [
     'assets/pictureDefaultGrad.png',
     'assets/pictureDefaultGrad.png',
     'assets/pictureDefaultGrad.png',
     'assets/pictureDefaultGrad.png',
     'assets/pictureDefaultGrad.png',
+  ]; */
+  final List<String> urlImages = [
+    'assets/batataFrita.png',
+    'assets/cachorroQuente.png',
+    'assets/hamburger1.png',
+    'assets/hamburger2.png',
+    'assets/hamburger3.png',
   ];
 
   @override
   Widget build(BuildContext context) {
-    FormStyle _formStyle = FormStyle();
     return Scaffold(
       backgroundColor: const Color.fromARGB(5, 5, 5, 5),
       appBar: AppBar(
@@ -54,9 +59,8 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                 CarouselSlider.builder(
                   carouselController: _controller,
                   itemCount: urlImages.length,
-                  itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
-                    return buildImages(urlImage, index);
+                  itemBuilder: (context, index, realIndex) {  
+                    return buildImages(index);
                   },
                   options: CarouselOptions(
                     height: 400,
@@ -77,7 +81,9 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                   height: 30,
                 ),
                 ElevatedButton(
-                  onPressed: _imgPickerHelpers.pickImageFromGallery,
+                  onPressed: () async {
+                    await _replaceImage();
+                  },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 14),
@@ -103,19 +109,24 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
     );
   }
 
-  Widget buildImages(String urlImage, int index) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 1),
-        color: Colors.grey,
-        child: Image.network(
-          urlImage,
-          fit: BoxFit.cover,
-        ),
-      );
+  Widget buildImages(int index) {
+    final urlImage = urlImages[index];
+    final imageData = imageBytes[index];
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 1),
+      color: Colors.grey,
+      child: imageData != null
+          ? Image.memory(imageData,
+              fit: BoxFit.cover)
+          : Image.asset(urlImage, fit: BoxFit.cover),
+    );
+  }
 
   Widget buildIndicator() {
     return AnimatedSmoothIndicator(
       activeIndex: currentIndex,
-      count: 5,
+      count: urlImages.length,
       onDotClicked: animateToSlide,
       effect: const WormEffect(
         dotWidth: 20,
@@ -163,6 +174,17 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
           ),
         ],
       );
+
+  Future<void> _replaceImage() async {
+    final Uint8List? pickedImage =
+        await _imgPickerHelpers.pickImageFromGallery(context);
+    if (pickedImage != null) {
+      setState(() {
+        imageBytes[currentIndex] =
+            pickedImage;
+      });
+    }
+  }
 
   void next() =>
       _controller.nextPage(duration: const Duration(microseconds: 500));

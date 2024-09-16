@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/services/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -26,14 +27,18 @@ class _ProfilePage extends State<ProfilePage> {
         fontWeight: FontWeight.w900,
       ),
     );
-  } 
+  }
 
   int _currentIndex = 0;
+  final TextEditingController _namePerfilController = TextEditingController();
+  final TextEditingController _emailPerfilController = TextEditingController();
+  final TextEditingController _passwordPerfilController =
+      TextEditingController();
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    final TextEditingController _emailController = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -55,7 +60,7 @@ class _ProfilePage extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 50, left: 50),
                       child: TextFormField(
-                        controller: _emailController,
+                        controller: _namePerfilController,
                         decoration: fieldStyleProfile('Editar seu nome'),
                       ),
                     ),
@@ -65,7 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 50, left: 50),
                       child: TextFormField(
-                        controller: _emailController,
+                        controller: _emailPerfilController,
                         decoration: fieldStyleProfile('Editar seu e-mail'),
                       ),
                     ),
@@ -75,7 +80,7 @@ class _ProfilePage extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 50, left: 50),
                       child: TextFormField(
-                        controller: _emailController,
+                        controller: _passwordPerfilController,
                         decoration: fieldStyleProfile('Mudar sua senha'),
                       ),
                     ),
@@ -83,7 +88,17 @@ class _ProfilePage extends State<ProfilePage> {
                       height: 40,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _authService.updateProfile(
+                            _namePerfilController.text,
+                            _emailPerfilController.text,
+                            _passwordPerfilController.text,
+                            context);
+
+                        _namePerfilController.clear();
+                        _emailPerfilController.clear();
+                        _passwordPerfilController.clear();
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(46, 10, 96, 1),
@@ -126,23 +141,16 @@ class _ProfilePage extends State<ProfilePage> {
         },
         items: const [
           BottomNavigationBarItem(
-            label: 'Cu',
+            label: 'Principal',
             icon: Icon(
-              Icons.menu,
+              Icons.home,
               color: Colors.white,
             ),
           ),
           BottomNavigationBarItem(
-            label: 'Penis',                       
+            label: 'Deslogar',
             icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Pau',
-            icon: Icon(
-              Icons.menu,
+              Icons.logout_outlined,
               color: Colors.white,
             ),
           ),

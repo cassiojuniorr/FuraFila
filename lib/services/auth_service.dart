@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fura_fila/core/snack_bar.dart';
 import 'package:fura_fila/services/company_service.dart';
 import './user_service.dart';
 
@@ -90,5 +92,45 @@ class AuthService {
 
   Future<void> resetPassword(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> updateProfile(String namePerfil, String emailPerfil,
+      String passwordPerfil, BuildContext context) async {
+    User? user = _firebaseAuth.currentUser;
+    print("aaaaaaaaaaaaaaaaaaaa $user");
+
+    try {
+      if (namePerfil.isNotEmpty) {
+        await user!.updateDisplayName(namePerfil);
+        print("Nome atualizado para: $namePerfil");
+      }
+
+      if (emailPerfil.isNotEmpty) {
+        await user!.verifyBeforeUpdateEmail(emailPerfil);
+        print("E-mail atualizado para: $emailPerfil");
+      }
+
+      if (passwordPerfil.isNotEmpty) {
+        await user!.updatePassword(passwordPerfil);
+        print("Senha atualizada");
+      }
+
+      await user!.reload();
+      user = _firebaseAuth.currentUser;
+
+      showSnackBar(
+        context: context,
+        text: "Perfil atualizado com sucesso!",
+        isErro: false,
+      );
+      print("bbbbbbbbbbbbbbbbbbbbbbbbb $user");
+    } catch (e) {
+      print("Erro ao atualizar perfil: $e");
+
+      showSnackBar(
+        context: context,
+        text: "Erro ao atualizar perfil!",
+      );
+    }
   }
 }
