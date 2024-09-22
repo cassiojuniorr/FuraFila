@@ -28,7 +28,7 @@ class _HomePage extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfileCustomer()),
                 );
               },
               icon: const Icon(Icons.account_circle_rounded)),

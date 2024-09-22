@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fura_fila/services/auth_service.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfileCustomer extends StatefulWidget {
+  const ProfileCustomer({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ProfilePage();
+  State<StatefulWidget> createState() => _ProfileCustomer();
 }
 
-class _ProfilePage extends State<ProfilePage> {
+class _ProfileCustomer extends State<ProfileCustomer> {
   InputDecoration fieldStyleProfile(text) {
     return InputDecoration(
       border: const UnderlineInputBorder(),
@@ -100,12 +100,12 @@ class _ProfilePage extends State<ProfilePage> {
                         _passwordPerfilController.clear();
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                           const Color.fromRGBO(46, 10, 96, 1),
                         ),
                       ),
                       child: const Text(
-                        'Salvar Dados',
+                        'Salvar',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,

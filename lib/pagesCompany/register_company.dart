@@ -260,7 +260,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                       ),
                     ),
                     child: const Text(
-                      'Cadastrar Empresa',
+                      'Cadastrar',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,

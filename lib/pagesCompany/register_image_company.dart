@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fura_fila/helpers/ImgPickerHelpers.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -16,22 +17,21 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
   final CarouselSliderController _controller = CarouselSliderController();
   final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
 
-  final List<Uint8List?> imageBytes = List<Uint8List?>.filled(
-      5, null);
- /*  final List<String> urlImages = [
-    'assets/pictureDefaultGrad.png',
-    'assets/pictureDefaultGrad.png',
-    'assets/pictureDefaultGrad.png',
-    'assets/pictureDefaultGrad.png',
-    'assets/pictureDefaultGrad.png',
-  ]; */
+  final List<Uint8List?> imageBytes = List<Uint8List?>.filled(5, null);
   final List<String> urlImages = [
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+    'assets/pictureDefaultGrad.png',
+  ];
+  /* final List<String> urlImages = [
     'assets/batataFrita.png',
     'assets/cachorroQuente.png',
     'assets/hamburger1.png',
     'assets/hamburger2.png',
     'assets/hamburger3.png',
-  ];
+  ]; */
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                 CarouselSlider.builder(
                   carouselController: _controller,
                   itemCount: urlImages.length,
-                  itemBuilder: (context, index, realIndex) {  
+                  itemBuilder: (context, index, realIndex) {
                     return buildImages(index);
                   },
                   options: CarouselOptions(
@@ -89,7 +89,7 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                           horizontal: 14, vertical: 14),
                       backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
                   child: const Text(
-                    'Adicionar imagens',
+                    'Adicionar',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -113,13 +113,14 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
     final urlImage = urlImages[index];
     final imageData = imageBytes[index];
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1),
-      color: Colors.grey,
-      child: imageData != null
-          ? Image.memory(imageData,
-              fit: BoxFit.cover)
-          : Image.asset(urlImage, fit: BoxFit.cover),
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 1),
+        color: Colors.grey,
+        child: imageData != null
+            ? Image.memory(imageData, fit: BoxFit.cover)
+            : Image.asset(urlImage, fit: BoxFit.cover),
+      ),
     );
   }
 
@@ -180,8 +181,7 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
         await _imgPickerHelpers.pickImageFromGallery(context);
     if (pickedImage != null) {
       setState(() {
-        imageBytes[currentIndex] =
-            pickedImage;
+        imageBytes[currentIndex] = pickedImage;
       });
     }
   }

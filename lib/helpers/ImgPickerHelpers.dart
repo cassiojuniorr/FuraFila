@@ -56,12 +56,12 @@ class ImgPickerHelpers {
         );
         return null;
       }
-
       if (kIsWeb) {
         await uploadImage(pickedImage, context);
       } else {
         final Directory appDirectory = await getApplicationDocumentsDirectory();
-        final String directoryPath = path.join(appDirectory.path, idUser);
+        final String directoryPath =
+            path.join(appDirectory.path, idUser, idUser);
         final Directory directory = Directory(directoryPath);
 
         if (!(await directory.exists())) {
@@ -105,7 +105,7 @@ class ImgPickerHelpers {
       } else {
         final Directory appDirectory = await getApplicationDocumentsDirectory();
         final String directoryPath =
-            path.join(appDirectory.path, 'imgCompany', idUser);
+            path.join(appDirectory.path, idUser, idUser);
         final Directory directory = Directory(directoryPath);
 
         if (!(await directory.exists())) {
@@ -128,14 +128,28 @@ class ImgPickerHelpers {
   Future<void> uploadImage(XFile image, BuildContext context) async {
     try {
       final String? idUser = await authService.getIdUser();
+      if (idUser == null) {
+        print('ID do usuário não foi encontrado');
+        showSnackBar(
+          context: context,
+          text: "ID do usuário não foi encontrado.",
+        );
+        return;
+      }
+
       final imageBytes = await image.readAsBytes();
       final fileName = "${idUser}_${image.name}";
 
       final uri = Uri.parse('http://10.0.0.190:3000/upload');
 
       final request = http.MultipartRequest('POST', uri)
-        ..files.add(http.MultipartFile.fromBytes('image', imageBytes,
-            filename: fileName, contentType: MediaType('image', 'jpg')));
+        ..fields['userId'] = idUser
+        ..files.add(http.MultipartFile.fromBytes(
+          'image',
+          imageBytes,
+          filename: fileName,
+          contentType: MediaType('image', 'jpg'),
+        ));
 
       final response = await request.send();
 
