@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fura_fila/core/snack_bar.dart';
@@ -94,28 +96,50 @@ class AuthService {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> updateProfile(String namePerfil, String emailPerfil,
-      String passwordPerfil, BuildContext context) async {
+  Future<void> updateProfileUser(
+      String namePerfil,
+      String emailPerfil,
+      String passwordPerfil,
+      String currentPassword,
+      BuildContext context) async {
     User? user = _firebaseAuth.currentUser;
-    print("aaaaaaaaaaaaaaaaaaaa $user");
+    if (user == null) {
+      print("Usuário não está autenticado");
+      return;
+    }
+
+    print("Usuário autenticado: $user");
 
     try {
+      // Tenta reautenticar o usuário com a senha atual
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      );
+
+      // Verifica a reautenticação antes de tentar atualizar
+      await user.reauthenticateWithCredential(credential);
+      print("Reautenticação bem-sucedida");
+
+      // Atualiza o nome de exibição, se fornecido
       if (namePerfil.isNotEmpty) {
-        await user!.updateDisplayName(namePerfil);
+        await user.updateDisplayName(namePerfil);
         print("Nome atualizado para: $namePerfil");
       }
 
+      // Atualiza o e-mail, se fornecido
       if (emailPerfil.isNotEmpty) {
-        await user!.verifyBeforeUpdateEmail(emailPerfil);
+        await user.verifyBeforeUpdateEmail(emailPerfil);
         print("E-mail atualizado para: $emailPerfil");
       }
 
+      // Atualiza a senha, se fornecida
       if (passwordPerfil.isNotEmpty) {
-        await user!.updatePassword(passwordPerfil);
+        await user.updatePassword(passwordPerfil);
         print("Senha atualizada");
       }
 
-      await user!.reload();
+      await user.reload();
       user = _firebaseAuth.currentUser;
 
       showSnackBar(
@@ -123,9 +147,43 @@ class AuthService {
         text: "Perfil atualizado com sucesso!",
         isErro: false,
       );
-      print("bbbbbbbbbbbbbbbbbbbbbbbbb $user");
+    } on FirebaseAuthException catch (e) {
+      // Aqui você pode verificar especificamente o erro de reautenticação
+      if (e.code == "wrong-password") {
+        showSnackBar(
+          context: context,
+          text: "Senha atual incorreta!",
+          isErro: true,
+        );
+      } else {
+        print("Erro ao atualizar perfil: ${e.code}");
+        showSnackBar(
+          context: context,
+          text: "Erro ao atualizar perfil: ${e.message}",
+          isErro: true,
+        );
+      }
     } catch (e) {
-      print("Erro ao atualizar perfil: $e");
+      print("Erro inesperado: $e");
+      showSnackBar(
+        context: context,
+        text: "Erro inesperado ao atualizar perfil!",
+        isErro: true,
+      );
+    }
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _firebaseAuth.signOut();
+      print('saaaaaaaaaaaaaaaaaaaiiiiiiiiinnnnnnnnnnddddddddddoooooooooooo');
+      showSnackBar(
+        context: context,
+        text: "Saida efetuada com sucesso!",
+        isErro: false,
+      );
+    } catch (e) {
+      print("Erro ao sair perfil: $e");
 
       showSnackBar(
         context: context,

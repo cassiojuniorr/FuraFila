@@ -37,13 +37,14 @@ class _LoginPage extends State<LoginPage> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
+              /* gradient: LinearGradient(
                 begin: Alignment.centerRight,
                 end: Alignment.bottomCenter,
                 colors: [
                   Color.fromRGBO(46, 10, 96, 1),
                 ],
-              ),
+              ), */
+              color: Color.fromRGBO(46, 10, 96, 1),
             ),
           ),
           Padding(
@@ -114,7 +115,7 @@ class _LoginPage extends State<LoginPage> {
                               : null;
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                             const Color.fromRGBO(151, 106, 202, 1),
                           ),
                         ),

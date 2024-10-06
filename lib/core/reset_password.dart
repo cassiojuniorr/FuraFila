@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fura_fila/helpers/LoginHelpers.dart';
-import 'package:fura_fila/helpers/RegisterHelpers.dart';
-import 'package:fura_fila/pagesCustomer/login_customer.dart';
 import '../style/form_style.dart';
 
 class ResetPassword extends StatefulWidget {

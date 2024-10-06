@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/pagesCustomer/home_customer.dart';
+import 'package:fura_fila/pagesCustomer/login_customer.dart';
 import 'package:fura_fila/services/auth_service.dart';
 
 class ProfileCustomer extends StatefulWidget {
@@ -9,6 +11,15 @@ class ProfileCustomer extends StatefulWidget {
 }
 
 class _ProfileCustomer extends State<ProfileCustomer> {
+  int _currentIndex = 0;
+  final AuthService _authService = AuthService();
+  final TextEditingController _namePerfilController = TextEditingController();
+  final TextEditingController _emailPerfilController = TextEditingController();
+  final TextEditingController _passwordPerfilController =
+      TextEditingController();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
+
   InputDecoration fieldStyleProfile(text) {
     return InputDecoration(
       border: const UnderlineInputBorder(),
@@ -29,12 +40,20 @@ class _ProfileCustomer extends State<ProfileCustomer> {
     );
   }
 
-  int _currentIndex = 0;
-  final TextEditingController _namePerfilController = TextEditingController();
-  final TextEditingController _emailPerfilController = TextEditingController();
-  final TextEditingController _passwordPerfilController =
-      TextEditingController();
-  final AuthService _authService = AuthService();
+  void _onItemTapped(int index) async {
+    if (index == 1) {
+      await _authService.signOut(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +69,17 @@ class _ProfileCustomer extends State<ProfileCustomer> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      "assets/pictureDefaultGrad.png",
-                      height: screenSize.width * 0.2,
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          print("Imagem clicada!");
+                        },
+                        child: Image.asset(
+                          "assets/pictureDefaultGrad.png",
+                          height: screenSize.width * 0.2,
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 40,
@@ -87,17 +114,27 @@ class _ProfileCustomer extends State<ProfileCustomer> {
                     const SizedBox(
                       height: 40,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50, left: 50),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _currentPasswordController,
+                        decoration: fieldStyleProfile('Senha atual'),
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: () async {
-                        await _authService.updateProfile(
+                        await _authService.updateProfileUser(
                             _namePerfilController.text,
                             _emailPerfilController.text,
                             _passwordPerfilController.text,
+                            _currentPasswordController.text,
                             context);
 
                         _namePerfilController.clear();
                         _emailPerfilController.clear();
                         _passwordPerfilController.clear();
+                        _currentPasswordController.clear();
                       },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(
@@ -134,21 +171,17 @@ class _ProfileCustomer extends State<ProfileCustomer> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
-            label: 'Principal',
+            label: 'P R I N C I P A L',
             icon: Icon(
               Icons.home,
               color: Colors.white,
             ),
           ),
           BottomNavigationBarItem(
-            label: 'Deslogar',
+            label: 'D E S L O G A R',
             icon: Icon(
               Icons.logout_outlined,
               color: Colors.white,

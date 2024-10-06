@@ -56,4 +56,23 @@ class FormStyle {
       contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
     );
   }
+
+  ButtonStyle fieldButtonTags() {
+    return ElevatedButton.styleFrom(
+        backgroundColor: Color.fromRGBO(46, 10, 96, 1),
+        side:
+            const BorderSide(width: 2.0, color: Color.fromRGBO(81, 25, 167, 1)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+        shadowColor: Colors.black);
+  }
+
+  TextStyle fieldTextTags() {
+    return const TextStyle(
+      fontSize: 16,
+      color: Colors.white,
+      fontWeight: FontWeight.w400,
+    );
+  }
 }

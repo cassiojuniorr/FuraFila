@@ -1,5 +1,4 @@
 import 'package:fura_fila/core/snack_bar.dart';
-import 'package:fura_fila/pagesCompany/register_company.dart';
 import 'package:fura_fila/pagesCompany/register_image_company.dart';
 import 'package:fura_fila/services/auth_service.dart';
 import 'package:flutter/material.dart';

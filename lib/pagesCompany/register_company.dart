@@ -255,7 +255,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                           : null;
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         const Color.fromRGBO(151, 106, 202, 1),
                       ),
                     ),

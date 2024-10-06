@@ -2,7 +2,10 @@ import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fura_fila/core/snack_bar.dart';
 import 'package:fura_fila/helpers/ImgPickerHelpers.dart';
+import 'package:fura_fila/services/company_service.dart';
+import 'package:fura_fila/style/form_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class RegisterImageCompany extends StatefulWidget {
@@ -33,13 +36,32 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
     'assets/hamburger3.png',
   ]; */
 
+  final List<String> tagList = [];
+  final CompanyService _companyService = CompanyService();
+
+  bool validTag(String tagValue) {
+    if (tagList.contains(tagValue)) {
+      showSnackBar(context: context, text: "Esta tag já está cadastrada!!");
+      return false;
+    }
+    return true;
+  }
+
+  void addTag(String tagValue) {
+    if (validTag(tagValue)) {
+      tagList.add(tagValue);
+      print(tagList);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    FormStyle _formStyle = FormStyle();
     return Scaffold(
       backgroundColor: const Color.fromARGB(5, 5, 5, 5),
       appBar: AppBar(
         title: const Text(
-          'Adicione as imagens',
+          'Adicione as Imagens e Tags',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
@@ -100,7 +122,40 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                 ),
                 const SizedBox(
                   height: 40,
-                )
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    addTag("Bar");
+                  },
+                  style: _formStyle.fieldButtonTags(),
+                  child: Text(
+                    'Bar',
+                    style: _formStyle.fieldTextTags(),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    addTag("Supermercado");
+                  },
+                  style: _formStyle.fieldButtonTags(),
+                  child: Text(
+                    'Supermercado',
+                    style: _formStyle.fieldTextTags(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    _companyService.addArray(tags: tagList, context: context);
+                  },
+                  style: _formStyle.fieldButtonTags(),
+                  child: Text(
+                    'Finalizar',
+                    style: _formStyle.fieldTextTags(),
+                  ),
+                ),
               ],
             ),
           ),
