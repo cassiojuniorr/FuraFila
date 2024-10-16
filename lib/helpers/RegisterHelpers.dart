@@ -100,7 +100,7 @@ class RegisterHelpersCompany extends RegisterHelpers {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const RegisterImageCompany()),
+                builder: (context) => const RegisterImageTagCompany()),
           );
         }
       } catch (e) {

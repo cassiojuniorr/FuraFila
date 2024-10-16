@@ -8,14 +8,14 @@ import 'package:fura_fila/services/company_service.dart';
 import 'package:fura_fila/style/form_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class RegisterImageCompany extends StatefulWidget {
-  const RegisterImageCompany({super.key});
+class RegisterImageTagCompany extends StatefulWidget {
+  const RegisterImageTagCompany({super.key});
 
   @override
   State<StatefulWidget> createState() => _RegisterImageCompany();
 }
 
-class _RegisterImageCompany extends State<RegisterImageCompany> {
+class _RegisterImageCompany extends State<RegisterImageTagCompany> {
   int currentIndex = 0;
   final CarouselSliderController _controller = CarouselSliderController();
   final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
@@ -28,13 +28,6 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
     'assets/pictureDefaultGrad.png',
     'assets/pictureDefaultGrad.png',
   ];
-  /* final List<String> urlImages = [
-    'assets/batataFrita.png',
-    'assets/cachorroQuente.png',
-    'assets/hamburger1.png',
-    'assets/hamburger2.png',
-    'assets/hamburger3.png',
-  ]; */
 
   final List<String> tagList = [];
   final CompanyService _companyService = CompanyService();
@@ -58,7 +51,7 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
   Widget build(BuildContext context) {
     FormStyle _formStyle = FormStyle();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(5, 5, 5, 5),
+      backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
       appBar: AppBar(
         title: const Text(
           'Adicione as Imagens e Tags',
@@ -70,6 +63,7 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
           size: 40,
         ),
         centerTitle: true,
+        elevation: 100,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 40, right: 40, left: 40),
@@ -100,48 +94,128 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                 const SizedBox(height: 30),
                 buildButtons(),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _replaceImage();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 14),
-                      backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
-                  child: const Text(
-                    'Adicionar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                    ),
+                const Text(
+                  "Adicione as Tags",
+                  style: TextStyle(
+                    fontSize: 34,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    addTag("Bar");
-                  },
-                  style: _formStyle.fieldButtonTags(),
-                  child: Text(
-                    'Bar',
-                    style: _formStyle.fieldTextTags(),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    addTag("Supermercado");
-                  },
-                  style: _formStyle.fieldButtonTags(),
-                  child: Text(
-                    'Supermercado',
-                    style: _formStyle.fieldTextTags(),
-                  ),
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio:
+                      3,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Bar");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Bar',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Supermecado");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Supermecado',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Hamburgueria");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Hamburgueria',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Restaurante Vegano");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Restaurante Vegano',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Churrascaria");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Churrascaria',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Pizzaria");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Pizzaria',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Comida Japonesa");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Comida Japonesa',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Sorveteria");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Sorveteria',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Comida Italiana");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Comida Italiana',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        addTag("Entreterimento");
+                      },
+                      style: _formStyle.fieldButtonTags(),
+                      child: Text(
+                        'Entreterimento',
+                        style: _formStyle.fieldTextTags(),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
@@ -150,12 +224,26 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
                   onPressed: () async {
                     _companyService.addArray(tags: tagList, context: context);
                   },
-                  style: _formStyle.fieldButtonTags(),
-                  child: Text(
-                    'Finalizar',
-                    style: _formStyle.fieldTextTags(),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                      side: const BorderSide(
+                          width: 4.0, color: Color.fromRGBO(255, 255, 255, 1)),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      shadowColor: Colors.black),
+                  child: const Text(
+                    'FINALIZAR',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Color.fromRGBO(46, 10, 96, 1),
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),
@@ -168,13 +256,18 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
     final urlImage = urlImages[index];
     final imageData = imageBytes[index];
 
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 1),
-        color: Colors.grey,
-        child: imageData != null
-            ? Image.memory(imageData, fit: BoxFit.cover)
-            : Image.asset(urlImage, fit: BoxFit.cover),
+    return GestureDetector(
+      onTap: () async {
+        await _replaceImage();
+      },
+      child: Expanded(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 1),
+          color: Colors.grey,
+          child: imageData != null
+              ? Image.memory(imageData, fit: BoxFit.cover)
+              : Image.asset(urlImage, fit: BoxFit.cover),
+        ),
       ),
     );
   }
@@ -187,8 +280,8 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
       effect: const WormEffect(
         dotWidth: 20,
         dotHeight: 20,
-        activeDotColor: Color.fromRGBO(46, 10, 96, 1),
-        dotColor: Colors.black12,
+        activeDotColor: Color.fromRGBO(255, 255, 255, 1),
+        dotColor: Color.fromARGB(47, 225, 0, 255),
       ),
     );
   }
@@ -200,12 +293,12 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
             style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-                backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
             onPressed: previous,
             child: const Icon(
               Icons.arrow_back,
               size: 32,
-              color: Colors.white,
+              color: const Color.fromRGBO(46, 10, 96, 1),
             ),
           ),
           stretch
@@ -217,12 +310,12 @@ class _RegisterImageCompany extends State<RegisterImageCompany> {
             style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-                backgroundColor: const Color.fromRGBO(46, 10, 96, 1)),
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
             onPressed: next,
             child: const Icon(
               Icons.arrow_forward,
               size: 32,
-              color: Colors.white,
+              color: Color.fromRGBO(46, 10, 96, 1),
             ),
           ),
           const SizedBox(

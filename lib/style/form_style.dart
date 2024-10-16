@@ -61,7 +61,7 @@ class FormStyle {
     return ElevatedButton.styleFrom(
         backgroundColor: Color.fromRGBO(46, 10, 96, 1),
         side:
-            const BorderSide(width: 2.0, color: Color.fromRGBO(81, 25, 167, 1)),
+            const BorderSide(width: 4.0, color: Color.fromRGBO(255, 255, 255, 1)),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
@@ -70,9 +70,9 @@ class FormStyle {
 
   TextStyle fieldTextTags() {
     return const TextStyle(
-      fontSize: 16,
+      fontSize: 30,
       color: Colors.white,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.bold,
     );
   }
 }
