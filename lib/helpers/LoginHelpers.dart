@@ -15,7 +15,7 @@ class LoginHelperUser {
       if (userId != null) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePageCustomer()),
         );
       } else {
         print("Login falhou: ID do usuário inválido");

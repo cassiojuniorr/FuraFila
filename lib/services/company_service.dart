@@ -22,9 +22,9 @@ class CompanyService {
       DocumentReference docRef = db.doc(currentCompany.uid);
 
       await docRef.set({
-        'emailUser': email,
-        'nameUser': name,
-        'passwordUser': password,
+        'emailCompany': email,
+        'nameCompany': name,
+        'passwordCompany': password,
         'cep': cep,
         'cnpj': cnpj,
         'queuePreference': queuePreference,
