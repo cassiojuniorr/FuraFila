@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
+import 'package:fura_fila/pagesCustomer/profile_customer.dart';
 import 'package:fura_fila/style/form_style.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -103,6 +104,20 @@ class _HomePageCustomer extends State<HomePageCustomer> {
           size: 40,
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            color: Colors.white,
+            iconSize: 45,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProfileCustomer()),
+              );
+            },
+          ),
+        ],
       ),
       drawer: _buildDrawer(context),
       body: Column(
