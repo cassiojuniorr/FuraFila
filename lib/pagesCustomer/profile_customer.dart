@@ -43,9 +43,10 @@ class _ProfileCustomer extends State<ProfileCustomer> {
   void _onItemTapped(int index) async {
     if (index == 1) {
       await _authService.signOut(context);
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),
+        (route) => false,
       );
     } else {
       Navigator.push(

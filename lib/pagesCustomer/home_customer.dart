@@ -1,89 +1,95 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:fura_fila/style/form_style.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePageCustomer extends StatefulWidget {
   const HomePageCustomer({super.key});
 
   @override
-  State<StatefulWidget> createState() => _HomePage();
+  State<StatefulWidget> createState() => _HomePageCustomer();
 }
 
-class _HomePage extends State<HomePageCustomer> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class _HomePageCustomer extends State<HomePageCustomer> {
+  final FormStyle _formStyle = FormStyle();
+  final TextEditingController _searchController = TextEditingController();
+  List<Map<String, dynamic>> _companies = [];
+  List<Map<String, dynamic>> _filteredCompanies = [];
 
-  Future<List<Map<String, dynamic>>> _fetchCompanies() async {
-    try {
-      // Obtendo documentos da coleção 'company'
-      QuerySnapshot snapshot = await _firestore.collection('company').get();
+  final List<String> images1 = [
+    'assets/ya1.png',
+    'assets/ya2.png',
+    'assets/ya3.png',
+    'assets/ya4.png',
+    'assets/ya5.png',
+  ];
 
-      // Verificar quantos documentos foram retornados
-      print("Número de empresas encontradas: ${snapshot.docs.length}");
+  final List<String> images2 = [
+    'assets/s1.png',
+    'assets/s2.png',
+    'assets/s3.png',
+    'assets/s4.png',
+    'assets/s5.png',
+  ];
 
-      if (snapshot.docs.isEmpty) {
-        return [];
-      }
+  final List<String> images3 = [
+    'assets/g1.png',
+    'assets/g2.png',
+    'assets/g3.png',
+    'assets/g4.png',
+    'assets/g5.png',
+  ];
 
-      // Lista de empresas com imagens incluídas
-      List<Map<String, dynamic>> companiesWithImages = [];
-
-      for (var doc in snapshot.docs) {
-        final data = doc.data() as Map<String, dynamic>;
-        final companyId = doc.id;
-
-        // Log para depuração
-        print("Empresa ID: $companyId, Nome: ${data['nameCompany']}");
-
-        // Busca as imagens da empresa
-        List<File> images = await _getCompanyImages(companyId);
-
-        // Adiciona os dados da empresa e as imagens à lista
-        companiesWithImages.add({
-          'id': companyId,
-          'nameCompany': data['nameCompany'] ?? 'Nome não disponível',
-          'tags': data['tags'] ?? [],
-          'images': images, // Adiciona as imagens aqui
-        });
-      }
-
-      return companiesWithImages;
-    } catch (e) {
-      // Log do erro
-      print("Erro ao carregar empresas: $e");
-      return [];
-    }
+  @override
+  void initState() {
+    super.initState();
+    _fetchCompanies();
+    _searchController.addListener(_filterCompanies);
   }
 
-  Future<List<File>> _getCompanyImages(String? companyId) async {
-    if (companyId == null) return [];
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
-    if (kIsWeb) {
-      print("Executando no Web - Sem suporte para arquivos locais.");
-      return [];
+  void _filterCompanies() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredCompanies = _companies
+          .where((company) =>
+              company['nameCompany']?.toLowerCase().contains(query) ?? false)
+          .toList();
+    });
+  }
+
+  Future<void> _fetchCompanies() async {
+    try {
+      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      final QuerySnapshot snapshot =
+          await _firestore.collection('company').get();
+      final companies = snapshot.docs.map((doc) {
+        return {
+          'nameCompany': doc['nameCompany'] ?? 'Sem Nome',
+          'tags': List<String>.from(doc['tags'] ?? []),
+        };
+      }).toList();
+
+      setState(() {
+        _companies = companies;
+        _filteredCompanies = companies;
+      });
+    } catch (e) {
+      print("Erro ao buscar empresas: $e");
     }
-
-    final directory = await getApplicationDocumentsDirectory();
-    final companyDirPath = '${directory.path}/imgCompany/$companyId';
-    final companyDir = Directory(companyDirPath);
-
-    print("Buscando imagens no diretório: $companyDirPath");
-
-    if (await companyDir.exists()) {
-      final files = companyDir.listSync().whereType<File>().toList();
-      print("Imagens encontradas: ${files.length}");
-      return files;
-    } else {
-      print("Diretório não encontrado: $companyDirPath");
-    }
-
-    return [];
   }
 
   @override
   Widget build(BuildContext context) {
+    int crossAxisCount = MediaQuery.of(context).size.width < 600 ? 1 : 2;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -99,106 +105,175 @@ class _HomePage extends State<HomePageCustomer> {
         centerTitle: true,
       ),
       drawer: _buildDrawer(context),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _fetchCompanies(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Nenhuma empresa cadastrada.'));
-          }
-
-          List<Map<String, dynamic>> companies = snapshot.data!;
-
-          return GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1,
-            ),
-            itemCount: companies.length,
-            itemBuilder: (context, index) {
-              final company = companies[index];
-              List<File> images = company['images'];
-
-              return GridTile(
-                header: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    company['nameCompany'] ?? 'Sem Nome',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                footer: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Tags: ${company['tags']?.join(", ") ?? 'Sem tags'}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ),
-                child: images.isNotEmpty
-                    ? Image.file(
-                        images.first,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        'assets/no_image_available.png',
-                        fit: BoxFit.cover,
-                      ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  Drawer _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      body: Column(
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(46, 10, 96, 1),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: _formStyle
+                  .fieldSearchStyle('Pesquise pelo nome do restaurante'),
             ),
-            child: Text(
-              'Menu',
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Página inicial'),
-            onTap: () {
-              Navigator.pushNamed(context, '/home');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Configurações'),
-            onTap: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Sair'),
-            onTap: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
-            },
+          Expanded(
+            child: _filteredCompanies.isEmpty
+                ? const Center(child: Text('Nenhuma empresa cadastrada.'))
+                : GridView.builder(
+                    padding: const EdgeInsets.all(30),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1.2,
+                    ),
+                    itemCount: _filteredCompanies.length,
+                    itemBuilder: (context, index) {
+                      final company = _filteredCompanies[index];
+                      List<String> images = getImagesForIndex(index);
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromRGBO(46, 10, 96, 1),
+                            width: 3.0,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: GridTile(
+                          header: Padding(
+                            padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 20),
+                            child: Text(
+                              company['nameCompany'] ?? 'Sem Nome',
+                              style: _formStyle.fieldCompanyName(context),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          child: buildCarousel(images, company),
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
     );
   }
+
+  List<String> getImagesForIndex(int index) {
+    if (index % 3 == 0) {
+      return images1;
+    } else if (index % 3 == 1) {
+      return images2;
+    } else {
+      return images3;
+    }
+  }
+
+  Widget buildCarousel(List<String> images, Map<String, dynamic> company) {
+    int currentIndex = 0;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double carouselHeight = screenWidth < 600 ? screenWidth * 0.4 : 400;
+
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: CarouselSlider.builder(
+                  itemCount: images.length,
+                  itemBuilder: (context, index, realIndex) {
+                    return Image.asset(
+                      images[index],
+                      fit: BoxFit.cover,
+                      width: screenWidth < 600 ? screenWidth * 0.8 : 400,
+                    );
+                  },
+                  options: CarouselOptions(
+                    height: carouselHeight,
+                    autoPlay: true,
+                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            AnimatedSmoothIndicator(
+              activeIndex: currentIndex,
+              count: images.length,
+              effect: const WormEffect(
+                dotWidth: 10,
+                dotHeight: 10,
+                activeDotColor: Color.fromRGBO(46, 10, 96, 1),
+                dotColor: Color.fromARGB(47, 225, 0, 255),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Tags: ${company['tags']?.join(", ") ?? 'Sem tags'}',
+                style: _formStyle.fieldCompanyTag(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+Drawer _buildDrawer(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        const DrawerHeader(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(46, 10, 96, 1),
+          ),
+          child: Text(
+            'Menu',
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.home),
+          title: const Text('Página inicial'),
+          onTap: () {
+            Navigator.pushNamed(context, '/home');
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text('Configurações'),
+          onTap: () {
+            Navigator.pushNamed(context, '/settings');
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Sair'),
+          onTap: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+              (route) => false,
+            );
+          },
+        ),
+      ],
+    ),
+  );
 }

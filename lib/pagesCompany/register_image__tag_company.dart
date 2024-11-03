@@ -12,10 +12,10 @@ class RegisterImageTagCompany extends StatefulWidget {
   const RegisterImageTagCompany({super.key});
 
   @override
-  State<StatefulWidget> createState() => _RegisterImageCompany();
+  State<StatefulWidget> createState() => _RegisterImageTagCompany();
 }
 
-class _RegisterImageCompany extends State<RegisterImageTagCompany> {
+class _RegisterImageTagCompany extends State<RegisterImageTagCompany> {
   int currentIndex = 0;
   final CarouselSliderController _controller = CarouselSliderController();
   final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
@@ -112,8 +112,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                   shrinkWrap: true,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio:
-                      3,
+                  childAspectRatio: 4.5,
                   children: [
                     ElevatedButton(
                       onPressed: () {
@@ -122,7 +121,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Bar',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -132,7 +131,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Supermecado',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -142,7 +141,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Hamburgueria',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -152,7 +151,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Restaurante Vegano',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -162,7 +161,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Churrascaria',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -172,7 +171,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Pizzaria',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -182,7 +181,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Comida Japonesa',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -192,7 +191,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Sorveteria',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -202,7 +201,9 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Comida Italiana',
-                        style: _formStyle.fieldTextTags(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                     ElevatedButton(
@@ -212,7 +213,7 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                       style: _formStyle.fieldButtonTags(),
                       child: Text(
                         'Entreterimento',
-                        style: _formStyle.fieldTextTags(),
+                        style: _formStyle.fieldTextTags(context),
                       ),
                     ),
                   ],
@@ -291,9 +292,12 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
         children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+            ),
             onPressed: previous,
             child: const Icon(
               Icons.arrow_back,
@@ -308,9 +312,12 @@ class _RegisterImageCompany extends State<RegisterImageTagCompany> {
                 ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-                backgroundColor: const Color.fromARGB(255, 255, 255, 255)),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+            ),
             onPressed: next,
             child: const Icon(
               Icons.arrow_forward,

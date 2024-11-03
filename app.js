@@ -27,6 +27,7 @@ const storage = multer.diskStorage({
   }
 });
 
+app.use('/images', express.static(path.join(__dirname, 'imgCompany')));
 
 const upload = multer({ storage: storage });
 
