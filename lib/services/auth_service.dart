@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fura_fila/core/snack_bar.dart';
@@ -28,13 +29,15 @@ class AuthService {
         password: password,
       );
 
-      serviceUser.singUpUser(name: name, email: email, password: password);
+      serviceUser.singUpUser(
+          name: name, email: email, password: password, userCredential: userCredential);
+
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
-        return 'O usuário já está cadastrda';
+        return 'O usuário já está cadastrado';
       }
-      print('Failed with error register code: ${e.code}');
+      print('Erro ao registrar o usuário. Código de erro: ${e.code}');
       return e.message;
     }
   }
@@ -111,31 +114,32 @@ class AuthService {
     print("Usuário autenticado: $user");
 
     try {
-      // Tenta reautenticar o usuário com a senha atual
       AuthCredential credential = EmailAuthProvider.credential(
         email: user.email!,
         password: currentPassword,
       );
-
-      // Verifica a reautenticação antes de tentar atualizar
       await user.reauthenticateWithCredential(credential);
       print("Reautenticação bem-sucedida");
 
-      // Atualiza o nome de exibição, se fornecido
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final DocumentReference userDoc =
+          firestore.collection('users').doc(user.uid);
+
       if (namePerfil.isNotEmpty) {
         await user.updateDisplayName(namePerfil);
+        await userDoc.update({'nameUser': namePerfil});
         print("Nome atualizado para: $namePerfil");
       }
 
-      // Atualiza o e-mail, se fornecido
       if (emailPerfil.isNotEmpty) {
         await user.verifyBeforeUpdateEmail(emailPerfil);
+        await userDoc.update({'emailUser': emailPerfil});
         print("E-mail atualizado para: $emailPerfil");
       }
 
-      // Atualiza a senha, se fornecida
       if (passwordPerfil.isNotEmpty) {
         await user.updatePassword(passwordPerfil);
+        await userDoc.update({'passwordUser': passwordPerfil});
         print("Senha atualizada");
       }
 
@@ -148,7 +152,6 @@ class AuthService {
         isErro: false,
       );
     } on FirebaseAuthException catch (e) {
-      // Aqui você pode verificar especificamente o erro de reautenticação
       if (e.code == "wrong-password") {
         showSnackBar(
           context: context,

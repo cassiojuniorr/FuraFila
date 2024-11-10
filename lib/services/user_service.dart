@@ -4,19 +4,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserService {
   CollectionReference db = FirebaseFirestore.instance.collection('users');
 
-  void singUpUser({
+  Future<String?> singUpUser({
     required String name,
     required String email,
     required String password,
+    required UserCredential userCredential,
   }) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    print('---------------------------------------------- $user');
+    User? user = userCredential.user;
+
     if (user != null) {
-      db
-          .add({'emailUser': email, 'nameUser': name, 'passwordUser': password})
-          .then((DocumentReference doc) =>
-              print('id user: ${doc.id}'))
-          .catchError((error) => print('${error}'));
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentReference userDoc = firestore.collection('users').doc(user.uid);
+
+      await userDoc.set({
+        'nameUser': name,
+        'emailUser': email, 
+        'passwordUser': password,
+      });
+
+      print('Documento do usuário salvo com sucesso!');
+      return null;
+    } else {
+      return 'Erro ao criar usuário';
     }
   }
 }
