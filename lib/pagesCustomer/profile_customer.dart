@@ -106,21 +106,19 @@ class _ProfileCustomer extends State<ProfileCustomer> {
                       height: 40,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 50, left: 50),
-                      child: TextFormField(
-                        controller: _passwordPerfilController,
-                        decoration: fieldStyleProfile('Mudar sua senha'),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 50, left: 50),
+                      padding: const EdgeInsets.only(
+                          right: 50, left: 50, bottom: 40),
                       child: TextFormField(
                         obscureText: true,
                         controller: _currentPasswordController,
                         decoration: fieldStyleProfile('Senha atual'),
+                      ),
+                    ),                    
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50, left: 50, bottom: 40),
+                      child: TextFormField(
+                        controller: _passwordPerfilController,
+                        decoration: fieldStyleProfile('Mudar sua senha'),
                       ),
                     ),
                     ElevatedButton(

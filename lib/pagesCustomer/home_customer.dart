@@ -21,22 +21,22 @@ class _HomePageCustomer extends State<HomePageCustomer> {
 
   final List<String> images1 = [
     'assets/ya1.png',
-    'assets/ya2.png',
-    'assets/ya3.png',
-    'assets/ya4.png',
-    'assets/ya5.png',
+    'assets/ya2.jpg',
+    'assets/ya3.jpeg',
+    'assets/ya4.jpg',
+    'assets/ya5.jpg',
   ];
 
   final List<String> images2 = [
-    'assets/s1.png',
-    'assets/s2.png',
-    'assets/s3.png',
-    'assets/s4.png',
-    'assets/s5.png',
+    'assets/pf1.png',
+    'assets/pf2.jpg',
+    'assets/pf3.jpg',
+    'assets/pf4.jpg',
+    'assets/pf5.jpg',
   ];
 
   final List<String> images3 = [
-    'assets/g1.png',
+    'assets/g1.jpg',
     'assets/g2.png',
     'assets/g3.png',
     'assets/g4.png',
@@ -209,8 +209,6 @@ class _HomePageCustomer extends State<HomePageCustomer> {
                   },
                   options: CarouselOptions(
                     height: carouselHeight,
-                    autoPlay: true,
-                    autoPlayAnimationDuration: const Duration(seconds: 2),
                     enlargeCenterPage: true,
                     onPageChanged: (index, reason) {
                       setState(() {
@@ -270,13 +268,13 @@ Drawer _buildDrawer(BuildContext context) {
             Navigator.pushNamed(context, '/home');
           },
         ),
-        ListTile(
+        /* ListTile(
           leading: const Icon(Icons.settings),
           title: const Text('Configurações'),
           onTap: () {
             Navigator.pushNamed(context, '/settings');
           },
-        ),
+        ), */
         ListTile(
           leading: const Icon(Icons.logout),
           title: const Text('Sair'),

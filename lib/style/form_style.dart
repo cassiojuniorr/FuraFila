@@ -99,7 +99,7 @@ class FormStyle {
 
   ButtonStyle fieldButtonTags() {
     return ElevatedButton.styleFrom(
-        backgroundColor: Color.fromRGBO(46, 10, 96, 1),
+        backgroundColor: const Color.fromRGBO(46, 10, 96, 1),
         side: const BorderSide(
             width: 4.0, color: Color.fromRGBO(255, 255, 255, 1)),
         shape: const RoundedRectangleBorder(
@@ -107,7 +107,7 @@ class FormStyle {
         ),
         shadowColor: Colors.black);
   }
-
+   
   TextStyle fieldTextTags(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double baseFontSize = 20;
