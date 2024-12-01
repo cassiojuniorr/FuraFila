@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:fura_fila/helpers/ImgPickerHelpers.dart';
 import 'package:fura_fila/pagesCustomer/home_customer.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
 import 'package:fura_fila/services/auth_service.dart';
@@ -19,6 +22,8 @@ class _ProfileCustomer extends State<ProfileCustomer> {
       TextEditingController();
   final TextEditingController _currentPasswordController =
       TextEditingController();
+  final ImgPickerHelpers _imgPickerHelpers = ImgPickerHelpers();
+  final List<Uint8List?> imageBytes = List<Uint8List?>.filled(5, null);
 
   InputDecoration fieldStyleProfile(text) {
     return InputDecoration(
@@ -73,13 +78,22 @@ class _ProfileCustomer extends State<ProfileCustomer> {
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () {
-                          print("Imagem clicada!");
+                        onTap: () async {
+                          await _replaceImage();
                         },
-                        child: Image.asset(
-                          "assets/pictureDefaultGrad.png",
-                          height: screenSize.width * 0.2,
-                        ),
+                        child: _profileImage != null
+                            ? ClipOval(
+                                child: Image.memory(
+                                  _profileImage!,
+                                  height: screenSize.width * 0.2,
+                                  width: screenSize.width * 0.2,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Image.asset(
+                                "assets/pictureDefaultGrad.png",
+                                height: screenSize.width * 0.2,
+                              ),
                       ),
                     ),
                     const SizedBox(
@@ -113,10 +127,12 @@ class _ProfileCustomer extends State<ProfileCustomer> {
                         controller: _currentPasswordController,
                         decoration: fieldStyleProfile('Senha atual'),
                       ),
-                    ),                    
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 50, left: 50, bottom: 40),
+                      padding: const EdgeInsets.only(
+                          right: 50, left: 50, bottom: 40),
                       child: TextFormField(
+                        obscureText: true,
                         controller: _passwordPerfilController,
                         decoration: fieldStyleProfile('Mudar sua senha'),
                       ),
@@ -189,5 +205,17 @@ class _ProfileCustomer extends State<ProfileCustomer> {
         ],
       ),
     );
+  }
+
+  Uint8List? _profileImage;
+
+  Future<void> _replaceImage() async {
+    final Uint8List? pickedImage =
+        await _imgPickerHelpers.pickImageFromGallery(context);
+    if (pickedImage != null) {
+      setState(() {
+        _profileImage = pickedImage;
+      });
+    }
   }
 }

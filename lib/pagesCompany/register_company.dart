@@ -281,7 +281,7 @@ class _RegisterCompany extends State<RegisterCompany> {
                     height: 40,
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () {                      
                       Navigator.push(
                         context,
                         MaterialPageRoute(

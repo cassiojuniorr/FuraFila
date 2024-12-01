@@ -30,7 +30,10 @@ class AuthService {
       );
 
       serviceUser.singUpUser(
-          name: name, email: email, password: password, userCredential: userCredential);
+          name: name,
+          email: email,
+          password: password,
+          userCredential: userCredential);
 
       return null;
     } on FirebaseAuthException catch (e) {
@@ -132,9 +135,14 @@ class AuthService {
       }
 
       if (emailPerfil.isNotEmpty) {
-        await user.verifyBeforeUpdateEmail(emailPerfil);
-        await userDoc.update({'emailUser': emailPerfil});
-        print("E-mail atualizado para: $emailPerfil");
+        await user.verifyBeforeUpdateEmail(emailPerfil);        
+        showSnackBar(
+          context: context,
+          text:
+              "Um link de verificação foi enviado para $emailPerfil. Confirme antes de continuar.",
+          isErro: false,
+        );
+        print("Email de verificação enviado para: $emailPerfil");
       }
 
       if (passwordPerfil.isNotEmpty) {
@@ -143,8 +151,20 @@ class AuthService {
         print("Senha atualizada");
       }
 
+      //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       await user.reload();
       user = _firebaseAuth.currentUser;
+
+      try {
+        await _firebaseAuth.signInWithEmailAndPassword(
+          email: emailPerfil.isNotEmpty ? emailPerfil : user!.email!,
+          password:
+              passwordPerfil.isNotEmpty ? passwordPerfil : currentPassword,
+        );
+        print("Sessão do usuário sincronizada com as novas credenciais");
+      } catch (e) {
+        print("Erro ao sincronizar sessão: $e");
+      }
 
       showSnackBar(
         context: context,

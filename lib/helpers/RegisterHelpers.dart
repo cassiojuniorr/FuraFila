@@ -1,5 +1,6 @@
 import 'package:fura_fila/core/snack_bar.dart';
 import 'package:fura_fila/pagesCompany/register_image__tag_company.dart';
+import 'package:fura_fila/pagesCustomer/home_customer.dart';
 import 'package:fura_fila/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,11 @@ class RegisterHelpersUser extends RegisterHelpers {
             text: "Cadastro efetuado com sucesso!",
             isErro: false,
           );
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePageCustomer()),
+            (route) => false,
+          );
         }
       } catch (e) {
         showSnackBar(context: context, text: "Erro ao realizar cadastro");
@@ -96,11 +101,11 @@ class RegisterHelpersCompany extends RegisterHelpers {
             context: context,
             text: "Cadastro da empresa efetuado com sucesso!",
             isErro: false,
-          );
-          Navigator.push(
+          );          
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
-                builder: (context) => const RegisterImageTagCompany()),
+            MaterialPageRoute(builder: (context) => const RegisterImageTagCompany()),
+            (route) => false,
           );
         }
       } catch (e) {

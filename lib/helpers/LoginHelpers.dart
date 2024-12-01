@@ -12,11 +12,13 @@ class LoginHelperUser {
 
       String? userId = await _authService.getIdUser();
       print(userId);
-      if (userId != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePageCustomer()),
-        );
+      if (userId != null) {        
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const HomePageCustomer()),
+            (route) => false,
+          );
       } else {
         print("Login falhou: ID do usuário inválido");
         showSnackBar(
