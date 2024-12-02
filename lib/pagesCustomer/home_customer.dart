@@ -268,13 +268,6 @@ Drawer _buildDrawer(BuildContext context) {
             Navigator.pushNamed(context, '/home');
           },
         ),
-        /* ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('Configurações'),
-          onTap: () {
-            Navigator.pushNamed(context, '/settings');
-          },
-        ), */
         ListTile(
           leading: const Icon(Icons.logout),
           title: const Text('Sair'),

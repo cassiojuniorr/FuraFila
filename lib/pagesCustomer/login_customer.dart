@@ -105,14 +105,26 @@ class _LoginPage extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          _LoginHelperUser.validLogin(
-                                  _emailLoginController.text,
-                                  _passwordLoginController.text)
-                              ? await _LoginHelperUser.loginButton(
-                                  _emailLoginController.text,
-                                  _passwordLoginController.text,
-                                  context)
-                              : null;
+                          bool isCompany =
+                              await _LoginHelperUser.checkIfCompany(
+                            _emailLoginController.text,
+                            _passwordLoginController.text,
+                            context,
+                          );
+
+                          if (isCompany) {
+                            await _LoginHelperUser.loginButtonCompany(
+                              _emailLoginController.text,
+                              _passwordLoginController.text,
+                              context,
+                            );
+                          } else {
+                            await _LoginHelperUser.loginButtonUser(
+                              _emailLoginController.text,
+                              _passwordLoginController.text,
+                              context,
+                            );
+                          }
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(

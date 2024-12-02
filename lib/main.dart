@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fura_fila/pagesCompany/home_company.dart';
 import 'package:fura_fila/pagesCompany/register_image__tag_company.dart';
 import 'package:fura_fila/pagesCustomer/home_customer.dart';
 import 'package:fura_fila/pagesCustomer/login_customer.dart';
